@@ -11,6 +11,8 @@ This branch is [rtlsdrblog/rtl-sdr-blog](https://github.com/rtlsdrblog/rtl-sdr-b
 | [#81](https://github.com/rtlsdrblog/rtl-sdr-blog/pull/81) | Library | `rtlsdr_close()` asks the device once and skips the deinit when it was unplugged; on macOS it printed six register errors on close. |
 | [#82](https://github.com/rtlsdrblog/rtl-sdr-blog/pull/82) | rtl_test | `rtl_test -p` measures PPM against `CLOCK_MONOTONIC` on macOS too, instead of the wall clock NTP can step. |
 | [#83](https://github.com/rtlsdrblog/rtl-sdr-blog/pull/83) | Library | `rtlsdr_read_async()` returns about a second after an unplug on macOS; before, it waited forever. |
+| this branch only | Library | `rtlsdr_r82xx_set_lna_gain/_mixer_gain/_vga_gain()` set a stage by register index 0..15, beside #79's dB API (which cannot reach mixer index 15); `rtlsdr_set_log_callback()` routes the library's messages to a host logger; `rtlsdr_mark_dev_lost()` lets a host report a loss it detected. Used by [stream1090](https://github.com/enricolorenzoni59/stream1090). |
+| this branch only | Build | Builds cleanly as a CMake subproject: host-independent paths and version, and no `rtl_*` tools or install rules unless asked for (`BUILD_UTILS_RTLSDR`, `RTLSDR_INSTALL`). CI builds it that way too. |
 | this branch only ([`866f391`](https://github.com/enricolorenzoni59/rtl-sdr-blog/commit/866f39178eeebc487aa1a45716fc07088cc3824c)) | Library | `rtlsdr_close()` and `rtlsdr_read_async()` share the device probe that #81 and #83 each add. It only makes sense upstream once both are merged. |
 
 #81 to #83 were tested on macOS 27 (Apple silicon, Homebrew libusb) with a NooElec NESDR SMArTee v5 (R820T); the pull requests carry the measurements. This branch builds on macOS without extra linker flags thanks to #80.

@@ -56,3 +56,37 @@ jobs:
             test -x build/src/$t || { echo "missing $t"; exit 1; }
           done
           if [ "$RUNNER_OS" = macOS ]; then otool -L build/src/rtl_test; else ldd build/src/rtl_test; fi
+
+      - name: Build as a subproject
+        # How stream1090 vendors it: add_subdirectory() and rtlsdr_static,
+        # with no rtl_* tools built and nothing of librtlsdr installed.
+        run: |
+          mkdir -p ../host
+          cat > ../host/CMakeLists.txt <<EOF
+          cmake_minimum_required(VERSION 3.13)
+          project(host C)
+          add_subdirectory(\${CMAKE_CURRENT_LIST_DIR}/../rtl-sdr-blog-src rtl-sdr-blog)
+          add_executable(host main.c)
+          target_link_libraries(host rtlsdr_static)
+          install(TARGETS host DESTINATION bin)
+          EOF
+          cat > ../host/main.c <<EOF
+          #include <stdio.h>
+          #include "rtl-sdr.h"
+          static void cb(rtlsdr_log_level_t l, const char *m) { (void)l; (void)m; }
+          int main(void) {
+              void *p[] = { (void *)rtlsdr_r82xx_set_lna_gain, (void *)rtlsdr_r82xx_set_mixer_gain,
+                            (void *)rtlsdr_r82xx_set_vga_gain, (void *)rtlsdr_mark_dev_lost,
+                            (void *)rtlsdr_set_tuner_gain_stage, (void *)rtlsdr_get_tuner_gain_stage_gains };
+              rtlsdr_set_log_callback(cb);
+              printf("%u devices, %d symbols\\n", rtlsdr_get_device_count(), (int)(sizeof p / sizeof p[0]));
+              return 0;
+          }
+          EOF
+          cp -R . ../rtl-sdr-blog-src && rm -rf ../rtl-sdr-blog-src/.git ../rtl-sdr-blog-src/build
+          cmake -S ../host -B ../host/build -DCMAKE_BUILD_TYPE=Release
+          cmake --build ../host/build --parallel
+          ../host/build/host
+          test -z "$(find ../host/build/rtl-sdr-blog/src -name 'rtl_*' -type f -perm -u+x)"
+          cmake --install ../host/build --prefix ../host/inst
+          test "$(cd ../host/inst && find . -type f)" = "./bin/host"
