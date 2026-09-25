@@ -28,7 +28,7 @@ add_library(rtlsdr SHARED librtlsdr.c
   tuner_e4k.c tuner_fc0012.c tuner_fc0013.c tuner_fc2580.c tuner_r82xx.c)
 target_link_libraries(rtlsdr ${LIBUSB_LINK_LIBRARIES} ${THREADS_PTHREADS_LIBRARY})
 target_include_directories(rtlsdr PUBLIC
-  $<BUILD_INTERFACE:${CMAKE_SOURCE_DIR}/include>
+  $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include>
   $<INSTALL_INTERFACE:include>  # <prefix>/include
   ${LIBUSB_INCLUDE_DIRS}
   ${THREADS_PTHREADS_INCLUDE_DIR}
@@ -46,7 +46,7 @@ add_library(rtlsdr_static STATIC librtlsdr.c
   tuner_e4k.c tuner_fc0012.c tuner_fc0013.c tuner_fc2580.c tuner_r82xx.c)
 target_link_libraries(rtlsdr_static ${LIBUSB_LINK_LIBRARIES} ${THREADS_PTHREADS_LIBRARY})
 target_include_directories(rtlsdr_static PUBLIC
-  $<BUILD_INTERFACE:${CMAKE_SOURCE_DIR}/include>
+  $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include>
   $<INSTALL_INTERFACE:include>  # <prefix>/include
   ${LIBUSB_INCLUDE_DIRS}
   ${THREADS_PTHREADS_INCLUDE_DIR}
@@ -62,7 +62,7 @@ generate_export_header(rtlsdr_static)
 # Set up Windows DLL resource files
 ########################################################################
 IF(MSVC)
-    include(${CMAKE_SOURCE_DIR}/cmake/Modules/Version.cmake)
+    include(${PROJECT_SOURCE_DIR}/cmake/Modules/Version.cmake)
 
     configure_file(
         ${CMAKE_CURRENT_SOURCE_DIR}/rtlsdr.rc.in
@@ -72,6 +72,7 @@ IF(MSVC)
   target_sources(rtlsdr_static PRIVATE ${CMAKE_CURRENT_BINARY_DIR}/rtlsdr.rc)
 ENDIF(MSVC)
 
+if(BUILD_UTILS_RTLSDR)
 ########################################################################
 # Setup libraries used in executables
 ########################################################################
@@ -79,7 +80,7 @@ add_library(convenience_static STATIC
     convenience/convenience.c
 )
 target_include_directories(convenience_static
-  PRIVATE ${CMAKE_SOURCE_DIR}/include)
+  PRIVATE ${PROJECT_SOURCE_DIR}/include)
 if(WIN32)
 add_library(libgetopt_static STATIC
     getopt/getopt.c
@@ -155,15 +156,20 @@ set_property(TARGET rtl_adsb APPEND PROPERTY COMPILE_DEFINITIONS "rtlsdr_STATIC"
 set_property(TARGET rtl_power APPEND PROPERTY COMPILE_DEFINITIONS "rtlsdr_STATIC" )
 set_property(TARGET rtl_biast APPEND PROPERTY COMPILE_DEFINITIONS "rtlsdr_STATIC" )
 endif()
+endif(BUILD_UTILS_RTLSDR)
 ########################################################################
 # Install built library files & utilities
 ########################################################################
+if(RTLSDR_INSTALL)
 install(TARGETS rtlsdr EXPORT RTLSDR-export
   LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR} # .so/.dylib file
   )
 install(TARGETS rtlsdr_static EXPORT RTLSDR-export
   ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR} # .so/.dylib file
   )
+if(BUILD_UTILS_RTLSDR)
 install(TARGETS rtl_sdr rtl_tcp rtl_test rtl_fm rtl_eeprom rtl_adsb rtl_power rtl_biast
   DESTINATION ${CMAKE_INSTALL_BINDIR}
   )
+endif()
+endif(RTLSDR_INSTALL)
