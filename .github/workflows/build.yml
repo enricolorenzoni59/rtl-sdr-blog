@@ -1,0 +1,58 @@
+name: build
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: ${{ matrix.name }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - name: Linux / GCC
+            os: ubuntu-latest
+            cc: gcc
+          - name: Linux / Clang
+            os: ubuntu-latest
+            cc: clang
+          - name: macOS / Apple Clang
+            os: macos-latest
+            cc: clang
+    env:
+      CC: ${{ matrix.cc }}
+      # The warnings CMakeLists.txt enables for GCC only, passed to every
+      # compiler, and any warning fails the build.
+      CFLAGS: >-
+        -Wall -Wextra -Wno-unused-parameter -Wno-unused -Wsign-compare
+        -Wdeclaration-after-statement -Werror
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # the version comes from git describe
+
+      - name: Dependencies (Linux)
+        if: runner.os == 'Linux'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libusb-1.0-0-dev pkg-config cmake
+
+      - name: Dependencies (macOS)
+        if: runner.os == 'macOS'
+        run: brew install libusb pkgconf
+
+      - name: Configure
+        run: cmake -S . -B build -DCMAKE_BUILD_TYPE=Release -DCMAKE_C_FLAGS="$CFLAGS"
+
+      - name: Build
+        run: cmake --build build --parallel
+
+      - name: Check the tools and the library linkage
+        run: |
+          for t in rtl_sdr rtl_tcp rtl_test rtl_fm rtl_eeprom rtl_adsb rtl_power rtl_biast; do
+            test -x build/src/$t || { echo "missing $t"; exit 1; }
+          done
+          if [ "$RUNNER_OS" = macOS ]; then otool -L build/src/rtl_test; else ldd build/src/rtl_test; fi
