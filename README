@@ -1,3 +1,34 @@
+**********************************************************************
+enrico-dev: RTL-SDR Blog master plus the improvements below
+**********************************************************************
+
+This branch is rtlsdrblog/rtl-sdr-blog master (aed0ea1) with the
+following changes merged, each also proposed upstream as its own pull
+request (https://github.com/rtlsdrblog/rtl-sdr-blog/pulls):
+
+  PR   Area       Improvement
+  ---  ---------  ------------------------------------------------------
+  #79  R82xx      Per-stage gain API: set/get the LNA, mixer and VGA
+                  gains separately, snapped to the tuner's steps.
+  #80  Build      Link libusb through the pkg-config imported target, so
+                  macOS/Homebrew builds link; the static library now
+                  links libusb as well.
+  #81  Library    rtlsdr_close() asks the device once and skips the
+                  deinit when it was unplugged (macOS printed six
+                  register errors on close).
+  #82  rtl_test   -p measures PPM against CLOCK_MONOTONIC on macOS too,
+                  instead of the wall clock NTP can step.
+  #83  Library    rtlsdr_read_async() returns about a second after an
+                  unplug on macOS; before, it waited forever.
+
+On top of the merges, one commit lets rtlsdr_close() and
+rtlsdr_read_async() share the device probe that #81 and #83 each add.
+
+#81 to #83 were tested on macOS 27 (Apple silicon, Homebrew libusb)
+with a NooElec NESDR SMArTee v5 (R820T); the pull requests carry the
+measurements. This branch builds on macOS without extra linker flags
+thanks to #80.
+
 rtl-sdr
 turns your Realtek RTL2832 based DVB dongle into a SDR receiver
 ======================================================================
