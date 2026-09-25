@@ -1,3 +1,9 @@
+# Experimental measured gain profiles
+
+This branch adds explicit, unit-specific 1090 MHz gain calibration APIs.
+Default gain tables and hardware programming are unchanged. See
+[measurement scope, API examples and tests](calibration/README.md).
+
 # Thanks [RTL-SDR Blog](https://www.rtl-sdr.com) for donating a V4L for my ADS-B experiments!
 
 ## rtl-sdr-blog: enrico-dev

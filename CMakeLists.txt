@@ -216,3 +216,10 @@ install(
 ########################################################################
 MESSAGE(STATUS "Building for version: ${VERSION} / ${LIBVER}")
 MESSAGE(STATUS "Using install prefix: ${CMAKE_INSTALL_PREFIX}")
+
+include(CTest)
+if(BUILD_TESTING)
+  add_executable(test_gain_calibration tests/test_gain_calibration.c)
+  target_link_libraries(test_gain_calibration rtlsdr)
+  add_test(NAME gain_calibration COMMAND test_gain_calibration)
+endif()

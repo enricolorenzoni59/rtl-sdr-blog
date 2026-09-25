@@ -464,6 +464,40 @@ RTLSDR_API int rtlsdr_set_bias_tee_gpio(rtlsdr_dev_t *dev, int gpio, int on);
 
 RTLSDR_API int rtlsdr_check_dongle_model(void *dev, char *manufact_check, char *product_check);
 
+/** Experimental, explicitly selected measurements of individual receivers.
+ * These are NOT universal model corrections or absolute RF gains.
+ * Validated at 1090 MHz, 2.4 MS/s, requested 2 MHz bandwidth, manual
+ * LNA/mixer, VGA index 8, RTL AGC off and direct sampling off.
+ * No hardware is accessed and no device/configuration is checked. The caller
+ * is responsible for applicability; serial numbers alone are not unique.
+ */
+enum rtlsdr_gain_profile {
+ RTLSDR_GAIN_PROFILE_V3_00000002_1090 = 1,
+ RTLSDR_GAIN_PROFILE_V4L_00000001_1090 = 2
+};
+
+typedef struct rtlsdr_gain_calibration {
+ int nominal_gain_tenth_db; /**< Argument to the unchanged set_tuner_gain(). */
+ int relative_gain_hundredth_db; /**< Relative to nominal setting zero. */
+} rtlsdr_gain_calibration_t;
+
+/** Copy a profile in nominal gain order (measured gains need not be sorted).
+ * Returns entry count, -1 for invalid arguments/profile, -2 for insufficient
+ * capacity. NULL with capacity zero queries the count. Errors write nothing.
+ * capacity is an entry count, not a byte count.
+ */
+RTLSDR_API int rtlsdr_get_gain_calibration(enum rtlsdr_gain_profile profile,
+ rtlsdr_gain_calibration_t *entries, uint32_t capacity);
+
+/** Find the nearest measured relative gain and copy its complete entry.
+ * Scans every entry, including duplicates and nonmonotonic measurements.
+ * Ties choose the lower nominal setting; out-of-range requests choose the
+ * closest measured value. Returns 0 on success, -1 on invalid arguments.
+ * This does NOT set hardware gain or enable manual gain control.
+ */
+RTLSDR_API int rtlsdr_select_calibrated_gain(enum rtlsdr_gain_profile profile,
+ int relative_gain_hundredth_db, rtlsdr_gain_calibration_t *selected);
+
 #ifdef __cplusplus
 }
 #endif

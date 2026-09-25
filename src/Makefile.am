@@ -9,7 +9,7 @@ AM_CFLAGS = ${CFLAGS} -fPIC ${SYMBOL_VISIBILITY}
 
 lib_LTLIBRARIES = librtlsdr.la
 
-librtlsdr_la_SOURCES = librtlsdr.c tuner_e4k.c tuner_fc0012.c tuner_fc0013.c tuner_fc2580.c tuner_r82xx.c
+librtlsdr_la_SOURCES = librtlsdr.c gain_calibration.c tuner_e4k.c tuner_fc0012.c tuner_fc0013.c tuner_fc2580.c tuner_r82xx.c
 librtlsdr_la_LDFLAGS = -version-info $(LIBVERSION)
 
 bin_PROGRAMS         = rtl_sdr rtl_tcp rtl_test rtl_fm rtl_eeprom rtl_adsb rtl_power
@@ -34,3 +34,8 @@ rtl_adsb_LDADD        = librtlsdr.la $(LIBM)
 
 rtl_power_SOURCES     = rtl_power.c convenience/convenience.c
 rtl_power_LDADD       = librtlsdr.la $(LIBM)
+
+check_PROGRAMS = test_gain_calibration
+TESTS = test_gain_calibration
+test_gain_calibration_SOURCES = $(top_srcdir)/tests/test_gain_calibration.c
+test_gain_calibration_LDADD = librtlsdr.la

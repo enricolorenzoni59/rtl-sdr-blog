@@ -24,7 +24,7 @@ else()
   set(LIBUSB_LINK_LIBRARIES ${LIBUSB_LIBRARIES})
 endif()
 
-add_library(rtlsdr SHARED librtlsdr.c
+add_library(rtlsdr SHARED librtlsdr.c gain_calibration.c
   tuner_e4k.c tuner_fc0012.c tuner_fc0013.c tuner_fc2580.c tuner_r82xx.c)
 target_link_libraries(rtlsdr ${LIBUSB_LINK_LIBRARIES} ${THREADS_PTHREADS_LIBRARY})
 target_include_directories(rtlsdr PUBLIC
@@ -42,7 +42,7 @@ generate_export_header(rtlsdr)
 ########################################################################
 # Setup static library variant
 ########################################################################
-add_library(rtlsdr_static STATIC librtlsdr.c
+add_library(rtlsdr_static STATIC librtlsdr.c gain_calibration.c
   tuner_e4k.c tuner_fc0012.c tuner_fc0013.c tuner_fc2580.c tuner_r82xx.c)
 target_link_libraries(rtlsdr_static ${LIBUSB_LINK_LIBRARIES} ${THREADS_PTHREADS_LIBRARY})
 target_include_directories(rtlsdr_static PUBLIC

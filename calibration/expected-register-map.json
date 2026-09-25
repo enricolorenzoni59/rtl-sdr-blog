@@ -1,0 +1,205 @@
+[
+  {
+    "nominal_gain_tenth_db": 0,
+    "expected_lna_index": 0,
+    "expected_mixer_index": 0,
+    "expected_vga_index": 8,
+    "table_sum_tenth_db": 0
+  },
+  {
+    "nominal_gain_tenth_db": 9,
+    "expected_lna_index": 1,
+    "expected_mixer_index": 0,
+    "expected_vga_index": 8,
+    "table_sum_tenth_db": 9
+  },
+  {
+    "nominal_gain_tenth_db": 14,
+    "expected_lna_index": 1,
+    "expected_mixer_index": 1,
+    "expected_vga_index": 8,
+    "table_sum_tenth_db": 14
+  },
+  {
+    "nominal_gain_tenth_db": 27,
+    "expected_lna_index": 2,
+    "expected_mixer_index": 1,
+    "expected_vga_index": 8,
+    "table_sum_tenth_db": 27
+  },
+  {
+    "nominal_gain_tenth_db": 37,
+    "expected_lna_index": 2,
+    "expected_mixer_index": 2,
+    "expected_vga_index": 8,
+    "table_sum_tenth_db": 37
+  },
+  {
+    "nominal_gain_tenth_db": 77,
+    "expected_lna_index": 3,
+    "expected_mixer_index": 2,
+    "expected_vga_index": 8,
+    "table_sum_tenth_db": 77
+  },
+  {
+    "nominal_gain_tenth_db": 87,
+    "expected_lna_index": 3,
+    "expected_mixer_index": 3,
+    "expected_vga_index": 8,
+    "table_sum_tenth_db": 87
+  },
+  {
+    "nominal_gain_tenth_db": 125,
+    "expected_lna_index": 4,
+    "expected_mixer_index": 3,
+    "expected_vga_index": 8,
+    "table_sum_tenth_db": 125
+  },
+  {
+    "nominal_gain_tenth_db": 144,
+    "expected_lna_index": 4,
+    "expected_mixer_index": 4,
+    "expected_vga_index": 8,
+    "table_sum_tenth_db": 144
+  },
+  {
+    "nominal_gain_tenth_db": 157,
+    "expected_lna_index": 5,
+    "expected_mixer_index": 4,
+    "expected_vga_index": 8,
+    "table_sum_tenth_db": 157
+  },
+  {
+    "nominal_gain_tenth_db": 166,
+    "expected_lna_index": 5,
+    "expected_mixer_index": 5,
+    "expected_vga_index": 8,
+    "table_sum_tenth_db": 166
+  },
+  {
+    "nominal_gain_tenth_db": 197,
+    "expected_lna_index": 6,
+    "expected_mixer_index": 5,
+    "expected_vga_index": 8,
+    "table_sum_tenth_db": 197
+  },
+  {
+    "nominal_gain_tenth_db": 207,
+    "expected_lna_index": 6,
+    "expected_mixer_index": 6,
+    "expected_vga_index": 8,
+    "table_sum_tenth_db": 207
+  },
+  {
+    "nominal_gain_tenth_db": 229,
+    "expected_lna_index": 7,
+    "expected_mixer_index": 6,
+    "expected_vga_index": 8,
+    "table_sum_tenth_db": 229
+  },
+  {
+    "nominal_gain_tenth_db": 254,
+    "expected_lna_index": 7,
+    "expected_mixer_index": 7,
+    "expected_vga_index": 8,
+    "table_sum_tenth_db": 254
+  },
+  {
+    "nominal_gain_tenth_db": 280,
+    "expected_lna_index": 8,
+    "expected_mixer_index": 7,
+    "expected_vga_index": 8,
+    "table_sum_tenth_db": 280
+  },
+  {
+    "nominal_gain_tenth_db": 297,
+    "expected_lna_index": 8,
+    "expected_mixer_index": 8,
+    "expected_vga_index": 8,
+    "table_sum_tenth_db": 297
+  },
+  {
+    "nominal_gain_tenth_db": 328,
+    "expected_lna_index": 9,
+    "expected_mixer_index": 8,
+    "expected_vga_index": 8,
+    "table_sum_tenth_db": 328
+  },
+  {
+    "nominal_gain_tenth_db": 338,
+    "expected_lna_index": 9,
+    "expected_mixer_index": 9,
+    "expected_vga_index": 8,
+    "table_sum_tenth_db": 338
+  },
+  {
+    "nominal_gain_tenth_db": 364,
+    "expected_lna_index": 10,
+    "expected_mixer_index": 9,
+    "expected_vga_index": 8,
+    "table_sum_tenth_db": 364
+  },
+  {
+    "nominal_gain_tenth_db": 372,
+    "expected_lna_index": 10,
+    "expected_mixer_index": 10,
+    "expected_vga_index": 8,
+    "table_sum_tenth_db": 372
+  },
+  {
+    "nominal_gain_tenth_db": 386,
+    "expected_lna_index": 11,
+    "expected_mixer_index": 10,
+    "expected_vga_index": 8,
+    "table_sum_tenth_db": 386
+  },
+  {
+    "nominal_gain_tenth_db": 402,
+    "expected_lna_index": 11,
+    "expected_mixer_index": 11,
+    "expected_vga_index": 8,
+    "table_sum_tenth_db": 402
+  },
+  {
+    "nominal_gain_tenth_db": 421,
+    "expected_lna_index": 12,
+    "expected_mixer_index": 11,
+    "expected_vga_index": 8,
+    "table_sum_tenth_db": 421
+  },
+  {
+    "nominal_gain_tenth_db": 434,
+    "expected_lna_index": 12,
+    "expected_mixer_index": 12,
+    "expected_vga_index": 8,
+    "table_sum_tenth_db": 434
+  },
+  {
+    "nominal_gain_tenth_db": 439,
+    "expected_lna_index": 13,
+    "expected_mixer_index": 12,
+    "expected_vga_index": 8,
+    "table_sum_tenth_db": 439
+  },
+  {
+    "nominal_gain_tenth_db": 445,
+    "expected_lna_index": 13,
+    "expected_mixer_index": 13,
+    "expected_vga_index": 8,
+    "table_sum_tenth_db": 445
+  },
+  {
+    "nominal_gain_tenth_db": 480,
+    "expected_lna_index": 14,
+    "expected_mixer_index": 13,
+    "expected_vga_index": 8,
+    "table_sum_tenth_db": 480
+  },
+  {
+    "nominal_gain_tenth_db": 496,
+    "expected_lna_index": 15,
+    "expected_mixer_index": 14,
+    "expected_vga_index": 8,
+    "table_sum_tenth_db": 496
+  }
+]
