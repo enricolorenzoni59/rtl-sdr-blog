@@ -1768,10 +1768,18 @@ err:
 	return r;
 }
 
-int rtlsdr_close(rtlsdr_dev_t *dev)
+/* One control read: LIBUSB_ERROR_NO_DEVICE means the device is gone. */
+static int rtlsdr_device_gone(rtlsdr_dev_t *dev)
 {
 	unsigned char probe[2];
 
+	return libusb_control_transfer(dev->devh, CTRL_IN, 0, USB_SYSCTL,
+				       USBB << 8, probe, 1, CTRL_TIMEOUT)
+		== LIBUSB_ERROR_NO_DEVICE;
+}
+
+int rtlsdr_close(rtlsdr_dev_t *dev)
+{
 	if (!dev)
 		return -1;
 
@@ -1779,10 +1787,7 @@ int rtlsdr_close(rtlsdr_dev_t *dev)
 	 * libusb on macOS keeps the event loop quiet, so dev_lost stays 0.
 	 * Ask the device once; if it is gone, skip the deinit, whose every
 	 * register write would fail with LIBUSB_ERROR_NO_DEVICE. */
-	if (!dev->dev_lost &&
-	    libusb_control_transfer(dev->devh, CTRL_IN, 0, USB_SYSCTL,
-				    USBB << 8, probe, 1, CTRL_TIMEOUT)
-	    == LIBUSB_ERROR_NO_DEVICE)
+	if (!dev->dev_lost && rtlsdr_device_gone(dev))
 		dev->dev_lost = 1;
 
 	if(!dev->dev_lost) {
@@ -1835,16 +1840,6 @@ int rtlsdr_read_sync(rtlsdr_dev_t *dev, void *buf, int len, int *n_read)
 		return -1;
 
 	return libusb_bulk_transfer(dev->devh, 0x81, buf, len, n_read, BULK_TIMEOUT);
-}
-
-/* One control read: LIBUSB_ERROR_NO_DEVICE means the device is gone. */
-static int rtlsdr_device_gone(rtlsdr_dev_t *dev)
-{
-	unsigned char probe[2];
-
-	return libusb_control_transfer(dev->devh, CTRL_IN, 0, USB_SYSCTL,
-				       USBB << 8, probe, 1, CTRL_TIMEOUT)
-		== LIBUSB_ERROR_NO_DEVICE;
 }
 
 static void LIBUSB_CALL _libusb_callback(struct libusb_transfer *xfer)
